@@ -32,8 +32,9 @@ export const getCategories = async (token: string) => {
         throw {error: response.email[0], status: result.status}
 }
 
-export const getItems = async (token: string) => {
-    const url = (process.env.NEXT_PUBLIC_BACKEND_BASE_URL ?? 'http://localhost:8000/api') + process.env.NEXT_PUBLIC_ITEMS_ROUTE
+export const getItems = async (token: string, url: string | null) => {
+    if (!url) 
+        url = (process.env.NEXT_PUBLIC_BACKEND_BASE_URL ?? 'http://localhost:8000/api') + process.env.NEXT_PUBLIC_ITEMS_ROUTE
     const result = await fetch(url,{method: "GET", headers: {"Content-type": 'application/json',  "Authorization": `Bearer ${token}`}})
         .then(res => {return res})
         .catch(error => {throw new APICallError(error.status, error.message)})

@@ -6,6 +6,8 @@ from django.contrib.auth.hashers import check_password
 from rest_framework import status
 from .models import Item, User, Token, Category, Tag
 from .serializers import UserSerializer, ItemSerializer, CategorySerializer, TagSerializer
+from rest_framework.pagination import PageNumberPagination
+
 
 
 class SignUpView(APIView):
@@ -66,8 +68,11 @@ class ItemView(APIView):
         if category_id: 
             items = items.filter(category=category_id)
 
-        serializer = ItemSerializer(items, many=True)
-        return Response(serializer.data)
+        paginator = PageNumberPagination()
+        paginator.page_size = 10
+        paginated_items = paginator.paginate_queryset(items, request)
+        serializer = ItemSerializer(paginated_items, many=True)
+        return paginator.get_paginated_response(serializer.data)
 
     def post(self, request):
         serializer = ItemSerializer(data=request.data, context={'request': request})

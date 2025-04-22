@@ -9,6 +9,8 @@ const Items: React.FC<{token: string | null}> = ({token}) => {
     const [categories, setCategories] = useState<{name: string, id: number}[]>([])
     const [items, setItems] = useState<{[key:string]: string}[]>([])
     const [modal, setModal]= useState({open: false, kind: ''})
+    const [paginationInfo, setPaginationInfo] = useState({next: null, previous: null})
+    const [url, setUrl] = useState<null | string>(null)
 
     console.log(items)
     console.log(categories)
@@ -18,11 +20,14 @@ const Items: React.FC<{token: string | null}> = ({token}) => {
             getCategories(token)
                 .then(res => setCategories(res))
                 .catch(error => console.log(error))
-            getItems(token)
-                .then(res => setItems(res))
+            getItems(token, url)
+                .then(res => {
+                    setPaginationInfo({next:res.next, previous:res.previous })
+                    setItems(res.results)
+                })
                 .catch(error => console.log(error))
             }
-    }, [token, modal])
+    }, [token, modal, url])
 
     return <div className={styles.wrapper}>
         <div className={styles.headerWrap}>
@@ -46,7 +51,7 @@ const Items: React.FC<{token: string | null}> = ({token}) => {
             <div onClick={()=> setModal({open: true, kind: 'item'})}>New Item</div>
             <div onClick={()=> setModal({open: true, kind: 'category'})}>New Category</div>
         </div>
-        <ItemsTable categories={categories} items={items}/>
+        <ItemsTable setUrl={setUrl} categories={categories} items={items} paginationInfo={paginationInfo}/>
         {modal.open && <CreateModal token={token ?? ''} categories={categories} items={items.map(item => item.name)} modal={modal} setModal={setModal}/>}
     </div>
 }

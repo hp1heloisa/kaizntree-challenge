@@ -1,12 +1,17 @@
-import { useState } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 import styles from "./ItemsTable.module.scss"
 import {SearchLocateMirror, OpenPanelRight, ArrowsVertical} from "@carbon/icons-react"
 import { Tag } from "@carbon/react"
 
 const ItemsTable: React.FC<{categories: {name: string, id: number}[],
-items: {[key:string]: string | number}[]}> = ({categories, items}) => {
+items: {[key:string]: string | number}[],
+paginationInfo: {
+    next: null;
+    previous: null;
+},
+setUrl: Dispatch<SetStateAction<string | null>>
+}> = ({categories, items, paginationInfo, setUrl}) => {
     const [catFilter, setCatFilter] = useState(-1)
-    const [pagIndex, setPagIndex] = useState(0)
 
     return <div className={styles.tableWrapper}>
         <div className={styles.tableHeader}>
@@ -36,24 +41,22 @@ items: {[key:string]: string | number}[]}> = ({categories, items}) => {
             {items.filter((item)=>  (catFilter===-1 ? item : item.category === categories[catFilter].id ? item : '')).map((item)=><div className={styles.itemWrap}>
                 <span>{item.sku}</span>
                 <span>{item.name}</span>
-                <span>{categories.filter(cat=>cat.id===item.category)[0].name}</span>
+                <span>{categories.filter(cat=>cat.id===item.category)[0]?.name}</span>
                 <span>${item.cost}/{item.unit}</span>
                 <span>{item.available_stock}</span>
-            </div>).slice(pagIndex*10, (pagIndex+1)*10)}
+            </div>)}
             {items.filter((item)=>  (catFilter===-1 ? item : item.category === categories[catFilter].id ? item : '')).length === 0 && 
             <div className={styles.notFound}>No items found... </div>}
         </div>
         <div className={styles.tableFooter}>
             <div className={styles.paginationHandle}>
-            <div className={`${ pagIndex === 0  ? styles.disabled : ''}`} onClick={()=>{
-                if (pagIndex > 0) setPagIndex(pagIndex-1)}}>{`<`}</div>
+            <div className={`${ paginationInfo.previous ? '' : styles.disabled }`}  onClick={()=>{
+                if (paginationInfo.previous) setUrl(paginationInfo.previous)}}>{`<`}</div>
                 <div 
-                className={`${ items.filter((item)=>  (catFilter===-1 ? item : item.category === categories[catFilter].id ? item : ''))
-                    .slice((pagIndex+1)*10, (pagIndex+2)*10).length === 0  ? styles.disabled : ''}`} 
+                className={`${ paginationInfo.next ? '' : styles.disabled }`} 
                 onClick={()=>{
-                    if (items.filter((item)=>  (catFilter===-1 ? item : item.category === categories[catFilter].id ? item : ''))
-                        .slice((pagIndex+1)*10, (pagIndex+2)*10).length > 0)
-                        setPagIndex(pagIndex+1)
+                    if (paginationInfo.next)
+                        setUrl(paginationInfo.next)
                     }}>{`>`}</div>
             </div>
         </div>
