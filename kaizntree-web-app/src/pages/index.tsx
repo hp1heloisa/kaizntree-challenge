@@ -1,13 +1,22 @@
 
-import styles from "@/styles/index.module.css";
+import Items from "@/components/Items/Items";
+import SideBar from "@/components/SideBar/SideBar";
+import TabHeader from "@/components/TabHeader/TabHeader";
+import styles from "@/styles/index.module.scss";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 
 export default function Home() {
   const { data: session, status } = useSession();
   const router = useRouter()
+  const [currentTab, setCurrentTab] = useState(1)
+  const [token, setToken] = useState<string | null>(null)
+
+  const tabsComponents: {[key: number]: any} = {
+    1: <Items token={token}/>
+  }
 
   console.log(status)
 
@@ -15,6 +24,9 @@ export default function Home() {
     if (status === "unauthenticated") {
       router.push('/signin')
     }
+
+    if (session && session.token) setToken(session.token)
+
   }, [status, router])
 
   if (status === 'loading') {
@@ -22,10 +34,14 @@ export default function Home() {
   } 
 
   if (!session) return null; 
-  
-  return <div>
 
-<h1>Bem-vinda, {session.user.email}</h1>
-<button onClick={() => signOut({ callbackUrl: "/signin" })}>Sair</button>
-  </div>
+  return (
+    <div className={styles.contentWrapper}>
+      <SideBar currentTab={currentTab} setCurrentTab={setCurrentTab}/>
+      <div className={styles.tabWrapper}>
+        <TabHeader />
+        {tabsComponents[currentTab] ?? 'Maintenance...'}
+      </div>
+    </div>
+  )
 }

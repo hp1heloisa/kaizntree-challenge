@@ -1,0 +1,18 @@
+@use '@carbon/react/scss/theme';
+
+.wrapper{
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.item{
+    color: theme.$text-secondary;
+    padding: 0.5rem;
+    border-radius: 5px;
+    &:hover{
+        background-color: theme.$background-hover;
+        cursor: pointer;
+    }
+}

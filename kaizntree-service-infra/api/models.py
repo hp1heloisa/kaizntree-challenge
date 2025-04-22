@@ -39,7 +39,7 @@ class Item(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     
     class Meta:
-        unique_together = ('name', 'category', 'user') 
+        unique_together = ('name', 'category', 'user')  #TODO: don't let user create item with category that is not from user
 
     def __str__(self):
         return f"{self.name} - {self.available_stock} - {self.cost} ({self.category.name})"

@@ -1,0 +1,71 @@
+@use '@carbon/react/scss/theme';
+@use '@carbon/colors';
+
+.wrapper{
+    padding-right: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.headerWrap{
+    color: theme.$text-secondary;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    >:nth-child(2){
+        cursor: pointer;
+    }
+}
+
+.generalInfo{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    >:nth-child(n){
+       border: 1px solid theme.$border-subtle;
+       border-radius: 5px;
+       padding: 1rem;
+    }
+
+}
+
+.titleGeneral{
+    color: theme.$text-on-color-disabled;
+}
+
+.quantWrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    >:last-child{
+        background-color: theme.$background-hover;
+        padding: 0.5rem;
+        border-radius: 5px;
+        color: theme.$text-placeholder;
+        font-weight: 600;
+        font-size: 0.75rem;
+    }
+}
+
+.quantGeneral{
+    font-weight: 600;
+    color: theme.$text-secondary;
+}
+
+.creationWrap{
+    display: flex;
+    gap: 1rem;
+    div{
+        background-color: colors.$blue-20;
+        color: colors.$blue-70;
+        padding: 0.5rem;
+        border-radius: 7px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        &:hover {
+            background-color: colors.$blue-20-hover;
+            cursor: pointer;
+        }
+    }
+}
