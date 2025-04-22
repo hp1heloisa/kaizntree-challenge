@@ -76,12 +76,18 @@ pip install -r requirements.txt
 ```
 Then migrate the database and start the server:
 ```bash
-python manage.py migrate
-python manage.py runserver
+python3 manage.py makemigrations
+python3 manage.py migrate
+python3 manage.py runserver
 ```
 Access the back-end at http://localhost:8000
 
 ### ⚛️ Front-end (Next.js)
+Change the `BACKEND_BASE_URL` variable on `kaizntree-web-app/.env` to:
+```bash
+BACKEND_BASE_URL=http://localhost:8000/api
+```
+Then run:
 ```bash
 cd kaizntree-web-app 
 npm install

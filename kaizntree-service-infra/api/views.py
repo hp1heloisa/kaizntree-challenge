@@ -4,8 +4,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.hashers import check_password
 from rest_framework import status
-from .models import Item, User, Token, Category
-from .serializers import UserSerializer, ItemSerializer, CategorySerializer
+from .models import Item, User, Token, Category, Tag
+from .serializers import UserSerializer, ItemSerializer, CategorySerializer, TagSerializer
 
 
 class SignUpView(APIView):
@@ -75,3 +75,19 @@ class ItemView(APIView):
             serializer.save(user=request.user)
             return Response(serializer.data, status=201)
         return Response(serializer.errors, status=400)
+
+
+class TagView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        tags = Tag.objects.filter(user=request.user)
+        serializer = TagSerializer(tags, many=True)
+        return Response(serializer.data)
+    
+    def post(self, request):
+        serializer = TagSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            serializer.save(user=request.user)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -8,10 +8,6 @@ items: {[key:string]: string | number}[]}> = ({categories, items}) => {
     const [catFilter, setCatFilter] = useState(-1)
     const [pagIndex, setPagIndex] = useState(0)
 
-    console.log(pagIndex)
-    console.log(pagIndex*10, (pagIndex+1)*10)
-    console.log(items.slice(pagIndex*10, (pagIndex+1)*10))
-
     return <div className={styles.tableWrapper}>
         <div className={styles.tableHeader}>
             <div className={styles.catWrapper}>
@@ -41,7 +37,7 @@ items: {[key:string]: string | number}[]}> = ({categories, items}) => {
                 <span>{item.sku}</span>
                 <span>{item.name}</span>
                 <span>{categories.filter(cat=>cat.id===item.category)[0].name}</span>
-                <span>${item.cost}</span>
+                <span>${item.cost}/{item.unit}</span>
                 <span>{item.available_stock}</span>
             </div>).slice(pagIndex*10, (pagIndex+1)*10)}
             {items.filter((item)=>  (catFilter===-1 ? item : item.category === categories[catFilter].id ? item : '')).length === 0 && 

@@ -1,7 +1,7 @@
 # serializers.py
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
-from .models import User, Item, Category
+from .models import User, Item, Category, Tag
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -28,7 +28,10 @@ class UserSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'tags']
+        extra_kwargs = {
+            'tags': {'required': False}
+        }
     
     def validate_name(self, value):
         user = self.context['request'].user
@@ -40,13 +43,26 @@ class CategorySerializer(serializers.ModelSerializer):
 class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
-        fields = ['id', 'sku', 'name', 'available_stock', 'cost', 'category']
+        fields = ['id', 'sku', 'name', 'available_stock', 'cost', 'unit', 'tags','category']
         extra_kwargs = {
             'sku': {'required': False, 'allow_null': True, 'allow_blank': True},
+            'tags': {'required': False}
         }
 
     def validate_name(self, value):
         user = self.context['request'].user
         if Item.objects.filter(user=user, name=value).exists():
             raise serializers.ValidationError("This item already exists")
+        return value
+
+
+class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        fields = ['id', 'name']
+    
+    def validate_name(self, value):
+        user = self.context['request'].user
+        if Tag.objects.filter(user=user, name=value).exists():
+            raise serializers.ValidationError("This tag already exists")
         return value

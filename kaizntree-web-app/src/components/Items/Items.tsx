@@ -5,7 +5,6 @@ import { getCategories, getItems } from "@/utils/functions"
 import CreateModal from "../CreateModal/CreateModal"
 import ItemsTable from "../ItemsTable/ItemsTable"
 
-//TODO: loading behavior
 const Items: React.FC<{token: string | null}> = ({token}) => {
     const [categories, setCategories] = useState<{name: string, id: number}[]>([])
     const [items, setItems] = useState<{[key:string]: string}[]>([])

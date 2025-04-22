@@ -4,7 +4,6 @@ import styles from './CreateModal.module.scss'
 import { createCategory, createItem } from "@/utils/functions";
 import {WarningFilled} from "@carbon/icons-react"
 
-//TODO: add a unit option for cost
 const CreateModal: React.FC<{
     modal: {open: boolean, kind: string}, 
     setModal: Dispatch<SetStateAction<{open: boolean, kind: string}>>,
@@ -14,6 +13,7 @@ const CreateModal: React.FC<{
 }> = ({modal, setModal, categories, items, token}) => {
     const [name, setName] = useState('')
     const [sku, setSku] = useState('')
+    const [unit, setUnit] = useState('')
     const [availableStock, setAvailableStock] = useState<number>(0)
     const [cost, setCost] = useState<number>(0)
     const [category, setCategory] = useState<{name: string, id: number}| null>(null)
@@ -23,7 +23,7 @@ const CreateModal: React.FC<{
     const validateFields = () => {
         setIsValid(true)
         setErrorMessage('')
-        if (!name || (modal.kind==='item' && ( category===undefined)))
+        if (!name || (modal.kind==='item' && ( category===undefined || !unit)))
             return setIsValid(false)
         if (modal.kind==='item' && items.includes(name)){
             setIsValid(false)
@@ -39,10 +39,11 @@ const CreateModal: React.FC<{
     const creationHandle = () => {
         validateFields()
         if (modal.kind === 'item') {
-            const data:{sku?:string, name: string,available_stock: number,cost: number,category: number} = {
+            const data:{name: string,available_stock: number,cost: number,unit:string, category: number, sku?:string} = {
                 name,
                 available_stock: availableStock,
                 cost,
+                unit,
                 category: category?.id ?? 0
               }
               if (sku) data.sku = sku
@@ -69,7 +70,11 @@ const CreateModal: React.FC<{
               {modal.kind === 'item' && <> 
                 <TextInput id="sku-name" labelText="SKU" value={sku} onChange={e => setSku(e.target.value)} />
                 <NumberInput id="available-stock" label="Available Stock" value={availableStock} onChange={(event, { value, direction }) => setAvailableStock(value as number)} />
-                <NumberInput id="cost" label="Cost" value={cost} onChange={(event, { value, direction }) => setCost(value as number)}/>
+                <div className={styles.costWrap}>
+                    <NumberInput id="cost" label="Cost" value={cost} onChange={(event, { value, direction }) => setCost(value as number)}/>
+                    <TextInput invalid={!isValid && (!unit || !errorMessage)} invalidText={errorMessage} 
+                        id="unit-name" labelText="Measurement Unit" value={unit} onChange={e => setUnit(e.target.value)} />
+                </div>
                 <Dropdown id="categories-dropdown" label="" items={categories} itemToString={(item) => item?.name ?? ''} titleText="Category" 
                     onChange={(data)=>setCategory(data.selectedItem)}
                     selectedItem={category}
@@ -79,7 +84,7 @@ const CreateModal: React.FC<{
              </ModalBody>
             <ModalFooter>
                 <Button kind="secondary" 
-                disabled={!name || (modal.kind==='item' && (availableStock===undefined || cost===undefined || category===null))}
+                disabled={!name || (modal.kind==='item' && (!unit || availableStock===undefined || cost===undefined || category===null))}
                 onClick={creationHandle}
                 >Add</Button>
             </ModalFooter>

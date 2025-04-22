@@ -47,11 +47,12 @@ export const getItems = async (token: string) => {
 }
 
 export const createItem = async (token: string,data: {
-    sku?: string,
     name: string,
     available_stock: number,
     cost: number,
-    category: number
+    unit: string,
+    category: number,
+    sku?: string,
   }) => {
     const url = (process.env.NEXT_PUBLIC_BACKEND_BASE_URL ?? 'http://localhost:8000/api') + process.env.NEXT_PUBLIC_ITEMS_ROUTE
     const result = await fetch(url,{method: "POST", body: JSON.stringify(data), headers: {"Content-type": 'application/json',  "Authorization": `Bearer ${token}`}})
