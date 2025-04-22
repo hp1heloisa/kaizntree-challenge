@@ -8,8 +8,8 @@ Authentication is handled using `next-auth` with a custom Django token-based log
 
 ## 🧱 Tech Stack
 
-- 🔙 Django (REST API with custom token auth)
-- 🔝 Next.js 
+- 🐍 Django (REST API with custom token auth)
+- ⚛️ Next.js 
 - 🔐 NextAuth.js (custom CredentialsProvider)
 - 🐋 Docker & Docker Compose
 - 💠 Carbon Design System
@@ -26,16 +26,44 @@ git clone https://github.com/hp1heloisa/kaizntree-challenge
 cd kaizntree-challenge
 ```
 
+### 📄 2. Configure the enviroment variables:
+For the **back-end**, create `kaizntree-service-infra/.env` file:
+```bash
+DB_NAME=
+DB_USER=
+DB_PASSWORD=
+DB_HOST=
+DB_PORT=
+SECRET_KEY=
+CORS_ALLOW_ALL=True
+```
+For the **front-end**, create `kaizntree-web-app/.env` file:
+```bash
+NEXTAUTH_SECRET=
+NEXTAUTH_URL=http://localhost:3000
 
-### 🐳 2. Run with Docker
+NEXT_PUBLIC_BACKEND_BASE_URL=http://localhost:8000/api
+NEXT_PUBLIC_SIGNUP_ROUTE=/signup
+NEXT_PUBLIC_CATEGORY_ROUTE=/categories
+NEXT_PUBLIC_ITEMS_ROUTE=/items
 
+BACKEND_BASE_URL=http://backend:8000/api
+```
+
+### 🐳 3. Run with Docker
+Create a `.env` file in the root directory with:
+```bash
+DB_NAME=
+DB_USER=
+DB_PASSWORD=
+```
+Then run:
 ```bash
 docker-compose up --build
 ```
 This will start:
 - Django back-end on http://localhost:8000
 - Next.js front-end on http://localhost:3000
-
 
 ## 🛠 Manual Setup (for development)
 ### 🐍 Back-end (Django)
@@ -45,14 +73,6 @@ python3 -m venv venv
 source venv/bin/activate 
 pip install --upgrade pip
 pip install -r requirements.txt
-```
-Create a `.env` file with:
-```bash
-DB_NAME=
-DB_USER=
-DB_PASSWORD=
-DB_HOST=
-DB_PORT=
 ```
 Then migrate the database and start the server:
 ```bash
@@ -65,20 +85,6 @@ Access the back-end at http://localhost:8000
 ```bash
 cd kaizntree-web-app 
 npm install
-```
-Create a `.env` file with:
-```bash
-NEXTAUTH_SECRET=
-NEXTAUTH_URL=http://localhost:3000
-
-NEXT_PUBLIC_BACKEND_BASE_URL=http://localhost:8000/api
-NEXT_PUBLIC_SIGNUP_ROUTE=/signup
-NEXT_PUBLIC_CATEGORY_ROUTE=/categories
-NEXT_PUBLIC_ITEMS_ROUTE=/items
-```
-
-Start the dev server:
-```bash
 npm run dev
 ```
 Access the front-end at http://localhost:3000

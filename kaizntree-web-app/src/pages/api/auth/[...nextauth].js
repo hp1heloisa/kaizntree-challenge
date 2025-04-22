@@ -12,8 +12,7 @@ export default NextAuth({
       },
 
       async authorize(credentials) {
-        console.log('entrou aqui')
-        const res = await fetch("http://localhost:8000/api/signin", {
+        const res = await fetch(`${process.env.BACKEND_BASE_URL}/signin`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
