@@ -1,3 +1,11 @@
+@use '@carbon/react/scss/theme';
+
+.errorMessage{
+    color: theme.$text-error;
+    display: flex;
+    gap: 0.5rem;
+}
+
 .modalBody{
     display: flex;
     flex-direction: column;

@@ -18,8 +18,6 @@ export default function Home() {
     1: <Items token={token}/>
   }
 
-  console.log(status)
-
   useEffect(()=>{
     if (status === "unauthenticated") {
       router.push('/signin')

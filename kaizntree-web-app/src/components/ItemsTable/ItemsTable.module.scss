@@ -1,0 +1,106 @@
+@use '@carbon/react/scss/theme';
+
+.tableWrapper{
+    border: 1px solid theme.$border-subtle;
+    border-radius: 5px;
+}
+
+.tableHeader{
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+}
+
+.catWrapper{
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.catItem{
+    color: theme.$text-secondary;
+    font-weight: 600;
+    font-size: 0.75rem;
+    &:hover{
+        background-color: theme.$background-selected;
+        padding: 0.5rem;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+}
+
+.selectedCat{
+    background-color: theme.$background-selected;
+    padding: 0.5rem;
+    border-radius: 5px;
+}
+
+.filterOptions{
+    display: flex;
+    gap: 1rem;
+    color: theme.$text-secondary;
+}
+
+.filterOptions div{
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.itemsHeader, .itemWrap{
+    padding: 0.5rem;
+    display: grid;
+    grid-template-columns: 1fr 4fr 4fr 2fr 2fr;
+    color: theme.$text-secondary;
+    font-weight: 600;
+    font-size: 0.75rem;
+    border-bottom: 1px solid theme.$border-subtle;
+}
+
+.itemsHeader{
+    background-color: theme.$background-selected;
+}
+
+.tableFooter{
+    background-color: theme.$background-hover;
+    padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.paginationHandle{
+    display: flex;
+    gap:0.1rem;
+    :nth-child(n){
+        background-color: theme.$background-selected;
+        color: theme.$text-placeholder;
+        font-weight: 600;
+        padding: 0.2rem;
+        cursor: pointer;
+        &:hover{
+            background-color: theme.$background-hover;
+        }
+    }
+    :first-child{
+        border-top-left-radius: 5px;
+        border-bottom-left-radius: 5px;
+    }
+    :last-child{
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+    }
+}
+
+.notFound{
+    padding: 0.5rem;
+    color: theme.$text-secondary;
+    font-weight: 600;
+    border-bottom: 1px solid theme.$border-subtle;
+}
+
+
+.disabled{
+    background-color: theme.$background-hover !important;
+    color: theme.$text-disabled !important;
+    cursor: not-allowed !important;
+}

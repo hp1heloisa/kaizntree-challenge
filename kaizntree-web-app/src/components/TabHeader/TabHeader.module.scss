@@ -1,4 +1,6 @@
 @use '@carbon/react/scss/theme';
+@use '@carbon/colors';
+
 
 .wrapper{
     display: flex;
@@ -15,4 +17,16 @@
         background-color: theme.$background-hover;
         cursor: pointer;
     }
+}
+
+.plusIcon{
+    background-color: colors.$blue-20;
+    color: colors.$blue-70;
+    border-radius: 50%;     
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;   
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
 }

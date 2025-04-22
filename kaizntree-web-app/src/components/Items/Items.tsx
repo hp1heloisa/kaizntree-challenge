@@ -3,14 +3,11 @@ import styles from "./Items.module.scss"
 import {Help} from "@carbon/icons-react"
 import { getCategories, getItems } from "@/utils/functions"
 import CreateModal from "../CreateModal/CreateModal"
+import ItemsTable from "../ItemsTable/ItemsTable"
 
-//TODO: new item + new category modals
-//TODO: table
-//TODO: pagination
-//TODO: update data
 //TODO: loading behavior
 const Items: React.FC<{token: string | null}> = ({token}) => {
-    const [categories, setCategories] = useState<{[key:string]: string}[]>([])
+    const [categories, setCategories] = useState<{name: string, id: number}[]>([])
     const [items, setItems] = useState<{[key:string]: string}[]>([])
     const [modal, setModal]= useState({open: false, kind: ''})
 
@@ -26,7 +23,7 @@ const Items: React.FC<{token: string | null}> = ({token}) => {
                 .then(res => setItems(res))
                 .catch(error => console.log(error))
             }
-    }, [token])
+    }, [token, modal])
 
     return <div className={styles.wrapper}>
         <div className={styles.headerWrap}>
@@ -50,7 +47,8 @@ const Items: React.FC<{token: string | null}> = ({token}) => {
             <div onClick={()=> setModal({open: true, kind: 'item'})}>New Item</div>
             <div onClick={()=> setModal({open: true, kind: 'category'})}>New Category</div>
         </div>
-        <CreateModal categories={categories} modal={modal} setModal={setModal}/>
+        <ItemsTable categories={categories} items={items}/>
+        {modal.open && <CreateModal token={token ?? ''} categories={categories} items={items.map(item => item.name)} modal={modal} setModal={setModal}/>}
     </div>
 }
 

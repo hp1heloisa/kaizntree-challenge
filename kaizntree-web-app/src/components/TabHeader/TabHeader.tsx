@@ -8,7 +8,7 @@ const items = [
     {name: "", icon: <Hourglass size={20} />},
     {name: "", icon: <Notification size={20} />},
     {name: "", icon: <UserAvatar size={20} />},
-    {name: "", icon: <AddFilled size={20} className={styles.plusIcon}/>}
+    {name: "", icon: <div className={styles.plusIcon}>+</div>}
 ]
 
 const TabHeader: React.FC<{}> = ({}) => {
