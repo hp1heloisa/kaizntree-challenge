@@ -8,6 +8,7 @@ items: {[key:string]: string | number}[],
 paginationInfo: {
     next: null;
     previous: null;
+    total: number
 },
 setUrl: Dispatch<SetStateAction<string | null>>
 }> = ({categories, items, paginationInfo, setUrl}) => {

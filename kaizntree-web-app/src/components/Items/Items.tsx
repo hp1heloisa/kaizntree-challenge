@@ -9,11 +9,8 @@ const Items: React.FC<{token: string | null}> = ({token}) => {
     const [categories, setCategories] = useState<{name: string, id: number}[]>([])
     const [items, setItems] = useState<{[key:string]: string}[]>([])
     const [modal, setModal]= useState({open: false, kind: ''})
-    const [paginationInfo, setPaginationInfo] = useState({next: null, previous: null})
+    const [paginationInfo, setPaginationInfo] = useState({next: null, previous: null, total: 0})
     const [url, setUrl] = useState<null | string>(null)
-
-    console.log(items)
-    console.log(categories)
 
     useEffect(()=>{
         if (token){ 
@@ -22,7 +19,7 @@ const Items: React.FC<{token: string | null}> = ({token}) => {
                 .catch(error => console.log(error))
             getItems(token, url)
                 .then(res => {
-                    setPaginationInfo({next:res.next, previous:res.previous })
+                    setPaginationInfo({next:res.next, previous:res.previous, total: res.count })
                     setItems(res.results)
                 })
                 .catch(error => console.log(error))
@@ -37,7 +34,7 @@ const Items: React.FC<{token: string | null}> = ({token}) => {
         <div className={styles.generalInfo}>
             <div>
                 <p className={styles.titleGeneral}>Total Items</p>
-                <p className={styles.quantGeneral}>{items.length}</p>
+                <p className={styles.quantGeneral}>{paginationInfo.total}</p>
             </div>
             <div>
                 <p className={styles.titleGeneral}>Total Categories</p>
