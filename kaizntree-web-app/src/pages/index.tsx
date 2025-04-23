@@ -23,6 +23,7 @@ export default function Home() {
       router.push('/signin')
     }
 
+    // @ts-ignore
     if (session && session.token) setToken(session.token)
 
   }, [status, router])
