@@ -13,7 +13,7 @@ const items = [
 
 const TabHeader: React.FC<{}> = ({}) => {
     return <div className={styles.wrapper}>{items.map((item, i) => 
-        <div className={styles.item}>
+        <div key={`tab_header_${item.name}${i}`}  className={styles.item}>
             {item.icon}
         </div>)}</div>
 }

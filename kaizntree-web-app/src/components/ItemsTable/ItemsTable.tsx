@@ -38,7 +38,7 @@ setUrl: Dispatch<SetStateAction<string | null>>
                 <span>Cost</span>
                 <span>Available Stock</span>
             </div>
-            {items.filter((item)=>  (catFilter===-1 ? item : item.category === categories[catFilter].id ? item : '')).map((item)=><div className={styles.itemWrap}>
+            {items.filter((item)=>  (catFilter===-1 ? item : item.category === categories[catFilter].id ? item : '')).map((item)=><div key={`item_${item.name}${item.id}`} className={styles.itemWrap}>
                 <span>{item.sku}</span>
                 <span>{item.name}</span>
                 <span>{categories.filter(cat=>cat.id===item.category)[0]?.name}</span>

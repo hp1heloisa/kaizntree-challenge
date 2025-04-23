@@ -32,6 +32,7 @@ const SideBar: React.FC<{currentTab: number, setCurrentTab: Dispatch<SetStateAct
             <div className={styles.navTabsWrapper}>
                 {navTabs.map((tab, i) => 
                 <div 
+                key={`tabs_wrapper_${tab.name}${i}`}
                     className={`${styles.navTab} ${currentTab===i ? styles.selected : null}`}
                     onClick={()=>setCurrentTab(i)}
                 >
@@ -42,7 +43,7 @@ const SideBar: React.FC<{currentTab: number, setCurrentTab: Dispatch<SetStateAct
        </div>
        <div className={styles.basic}>
             {basicFunc.map((func, i) => 
-            <div className={styles.funcWrap} onClick={()=>{
+            <div key={`basic_func_${func.name}${i}`} className={styles.funcWrap} onClick={()=>{
                if (func.name.toLowerCase() === "logout") signOut({ callbackUrl: "/signin" })
             }}>
                 {func.icon}
